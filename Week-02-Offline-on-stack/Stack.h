@@ -18,4 +18,14 @@ public:
     virtual void setDirection(int direction) = 0; // Sets the direction of growth of an empty array based stack
 };
 
+template<typename T>
+void printStack(Stack<T> &s, const char seperator = ' ', bool reverse = false){
+    if(s.length()==0) return;
+    if(s.length()==1){ std::cout<<s.topValue(); return;}
+    T top = s.pop();
+    if(reverse) {printStack(s,seperator, reverse); std::cout<<seperator<<top;}
+    else {std::cout<<top<<seperator; printStack(s,seperator, reverse);}
+    s.push(top);
+}
+
 #endif

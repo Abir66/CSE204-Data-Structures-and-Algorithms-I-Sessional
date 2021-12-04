@@ -2,8 +2,8 @@
 #define ASTACK_H
 
 #include "Stack.h"
-#include <assert.h>
-#include <iostream>
+
+
 
 template <typename T>
 class AStack : public Stack<T>
@@ -13,7 +13,7 @@ class AStack : public Stack<T>
     int top;
     int direction = 1;
     int arraySize;
-    bool shared = false;
+    bool providedArray = false;
 
     void resize()
     {
@@ -22,8 +22,7 @@ class AStack : public Stack<T>
         int offset = direction == 1 ? 0 : arraySize;
         for (int i = 0; i < arraySize; i++) newArray[offset + i] = stackArray[i];
         top += offset;
-
-        delete[] stackArray;
+        if(!providedArray)delete[] stackArray;
         stackArray = newArray;
         // arraySize += chunckSize;
         arraySize *= 2;
@@ -37,15 +36,15 @@ public:
         stackArray = new T[arraySize];
     }
 
-    AStack(T* ara, int size, int direction = 1, bool shared = false){
+    AStack(T* ara, int size, int direction = 1){
         stackArray = ara;
         arraySize = size;
         setDirection(direction);
-        this->shared = shared;
+        this->providedArray = true;
     }
 
     ~AStack(){
-        if(!shared) delete[] stackArray;
+        if(!providedArray) delete[] stackArray;
     }
 
     // Reinitialize the stack, i.e., make it (logically) empty stack
